@@ -1,6 +1,7 @@
 package nl.hu.dp.ovchip;
 
 import nl.hu.dp.ovchip.dao.*;
+import nl.hu.dp.ovchip.domein.Adres;
 import nl.hu.dp.ovchip.domein.OVChipkaart;
 import nl.hu.dp.ovchip.domein.Reiziger;
 import org.hibernate.HibernateException;
@@ -79,6 +80,14 @@ public class Main {
         OVChipkaartDAOHibernate ovcDAOHibernate = new OVChipkaartDAOHibernate(session);
         ProductDAOHibernate pDAOHibernate = new ProductDAOHibernate(session);
 
+        rDAOHibernate.setAdao(aDAOHibernate);
+        rDAOHibernate.setOvcDao(ovcDAOHibernate);
+
+        aDAOHibernate.setRdao(rDAOHibernate);
+
+        ovcDAOHibernate.setPdao(pDAOHibernate);
+
+        //TEST ReizigerDAOHibernate
         System.out.println("\n---------- Test ReizigerDAOHibernate -------------");
         System.out.println("[Test ReizigerDAOHibernate.findAll() geeft de volgende reizigers:");
         List<Reiziger> reizigers = rDAOHibernate.findAll();
@@ -113,12 +122,53 @@ public class Main {
         System.out.println("Gegevens van reiziger met reiziger_id #6:\n" + rDAOHibernate.findById(6));
         hieu.setTussenvoegsel("van de");
         hieu.setAchternaam("Buurt");
+        rDAOHibernate.update(hieu);
         System.out.println("Na ReizigerDAOHibernate.update() zijn de gegevens:\n" + rDAOHibernate.findById(6));
 
         System.out.println("\n[Test ReizigerDAOHibernate.delete()]");
         System.out.print(String.format("Aantal reizigers: %d, ", rDAOHibernate.findAll().size()));
         rDAOHibernate.delete(rDAOHibernate.findById(6));
         System.out.println("na ReizigerDAOHibernate.delete(): " + rDAOHibernate.findAll().size());
+
+        //TEST AdresDAOHibernate
+        System.out.println("\n---------- Test AdresDAOHibernate -------------");
+        System.out.println("[Test AdresDAOHibernate.findAll() geeft de volgende adressen:");
+        List<Adres> adressen = aDAOHibernate.findAll();
+        for (Adres adres : adressen) {
+            System.out.println(adres);
+        }
+
+        System.out.println("\n[Test AdresDAOHibernate.findByReiziger() geeft de volgende adres:");
+        System.out.println(aDAOHibernate.findByReiziger(rDAOHibernate.findById(1)));
+
+        System.out.println("\n[Test AdresDAOHibernate.save()]");
+        System.out.print(String.format("Aantal adressen: %d, ", aDAOHibernate.findAll().size()));
+        rDAOHibernate.save(hieu);
+        Adres adres = new Adres(6, "3607BL", "556", "Duivenkamp", "Maarssen", hieu);
+        aDAOHibernate.save(adres);
+        System.out.println("na AdresDAOHibernate.save(): " + aDAOHibernate.findAll().size());
+
+        System.out.println("\n[Test ReizigerDAOHibernate.update()]");
+        System.out.println("Gegevens van adres van reiziger " + rDAOHibernate.findById(6).getVoorletters() + ":\n"
+                + aDAOHibernate.findByReiziger(rDAOHibernate.findById(6)));
+        adres.setHuisnummer("551");
+        aDAOHibernate.update(adres);
+        System.out.println("Na AdresDAOHibernate.update() zijn de gegevens:\n" + aDAOHibernate.findByReiziger(rDAOHibernate.findById(6)));
+
+        System.out.println("\n[Test AdresDAOHibernate.delete()]");
+        System.out.print(String.format("Aantal adressen: %d, ", aDAOHibernate.findAll().size()));
+        aDAOHibernate.delete(aDAOHibernate.findByReiziger(rDAOHibernate.findById(6)));
+        System.out.println("na AdresDAOHibernate.delete(): " + aDAOHibernate.findAll().size());
+        rDAOHibernate.delete(rDAOHibernate.findById(6));
+
+
+        //TEST OVChipkaartDAOHibernate
+        System.out.println("\n---------- Test OVChipkaartDAOHibernate -------------");
+
+
+        //TEST ProductDAOHibernate
+        System.out.println("\n---------- Test ProductDAOHibernate -------------");
+
 
         session.close();
     }
