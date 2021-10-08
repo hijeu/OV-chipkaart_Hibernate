@@ -2,7 +2,8 @@ package nl.hu.dp.ovchip.domein;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "ov_chipkaart")
@@ -22,7 +23,7 @@ public class OVChipkaart {
     @JoinTable(name = "ov_chipkaart_product",
             joinColumns = {@JoinColumn(name = "kaart_nummer")},
             inverseJoinColumns = {@JoinColumn(name = "product_nummer")})
-    private Set<Product> producten = new HashSet<>();
+    private List<Product> producten = new ArrayList<>();
 
     public OVChipkaart(int kaartNummer, Date geldigTot, int klasse, double saldo, Reiziger reiziger) {
         this.kaartNummer = kaartNummer;
@@ -30,6 +31,9 @@ public class OVChipkaart {
         this.klasse = klasse;
         this.saldo = saldo;
         this.reiziger = reiziger;
+    }
+
+    public OVChipkaart(int i, Date geboortedatum, int i1, double v) {
     }
 
     public OVChipkaart() {
@@ -75,11 +79,11 @@ public class OVChipkaart {
         this.reiziger = reiziger;
     }
 
-    public Set<Product> getProducten() {
+    public List<Product> getProducten() {
         return producten;
     }
 
-    public void setProducten(Set<Product> producten) {
+    public void setProducten(List<Product> producten) {
         this.producten = producten;
     }
 

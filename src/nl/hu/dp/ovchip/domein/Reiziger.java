@@ -17,7 +17,7 @@ public class Reiziger {
     @OneToOne(mappedBy = "reiziger")
     private Adres adres;
     @OneToMany(mappedBy = "reiziger")
-    private Set<OVChipkaart> ovChipkaarten = new HashSet<>();
+    private List<OVChipkaart> ovChipkaarten = new ArrayList<>();
 
     public Reiziger(int reizigernummer, String voorletters, String tussenvoegsel, String achternaam, Date geboortedatum) {
         this.reizigernummer = reizigernummer;
@@ -78,11 +78,11 @@ public class Reiziger {
         this.adres = adres;
     }
 
-    public Set<OVChipkaart> getOVChipkaarten() {
+    public List<OVChipkaart> getOVChipkaarten() {
         return ovChipkaarten;
     }
 
-    public void setOVChipkaarten(Set<OVChipkaart> OVChipkaarten) {
+    public void setOVChipkaarten(List<OVChipkaart> OVChipkaarten) {
         this.ovChipkaarten = OVChipkaarten;
     }
 
@@ -91,7 +91,7 @@ public class Reiziger {
                 getReizigernummer(),
                 getVoorletters());
 
-        if (!Objects.equals(getTussenvoegsel(), "") && getTussenvoegsel() != null) {
+        if (getTussenvoegsel() != null) {
             s += getTussenvoegsel() + " ";
         }
 

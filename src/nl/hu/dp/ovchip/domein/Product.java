@@ -1,7 +1,8 @@
 package nl.hu.dp.ovchip.domein;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,7 +15,7 @@ public class Product {
     private double prijs;
 
     @ManyToMany(mappedBy = "producten")
-    private Set<OVChipkaart> ovChipkaarten = new HashSet<OVChipkaart>() {
+    private List<OVChipkaart> ovChipkaarten = new ArrayList<OVChipkaart>() {
     };
 
     public Product(int productNummer, String naam, String beschrijving, double prijs) {
@@ -59,18 +60,16 @@ public class Product {
         this.prijs = prijs;
     }
 
-    public Set<OVChipkaart> getOvChipkaarten() {
+    public List<OVChipkaart> getOvChipkaarten() {
         return ovChipkaarten;
     }
 
-    public void setOvChipkaarten(Set<OVChipkaart> ovChipkaarten) {
+    public void setOvChipkaarten(List<OVChipkaart> ovChipkaarten) {
         this.ovChipkaarten = ovChipkaarten;
     }
 
     public void addOVChipkaart(OVChipkaart ovChipkaart) {
-        if (!ovChipkaarten.contains(ovChipkaart)) {
-            ovChipkaarten.add(ovChipkaart);
-        }
+        ovChipkaarten.add(ovChipkaart);
     }
 
     public void removeOVChipkaart(OVChipkaart ovChipkaart) {
