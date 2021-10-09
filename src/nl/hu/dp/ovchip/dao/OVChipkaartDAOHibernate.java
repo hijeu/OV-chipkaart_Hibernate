@@ -123,18 +123,10 @@ public class OVChipkaartDAOHibernate implements OVChipkaartDAO {
 
     @Override
     public List<OVChipkaart> findByProduct(Product product) {
-        List<OVChipkaart> ovChipkaarten = new ArrayList<>();
-
-        Query query = session.createQuery("select kaartNummer from ov_chipkaart, Product where productnummer = :product_nummer");
+        Query query = session.createQuery("from ov_chipkaart ovc join fetch ovc.producten ovcp where ovcp.productnummer = :product_nummer");
         query.setParameter("product_nummer", product.getProductnummer());
 
-        List<Integer> kaartnummers = query.getResultList();
-
-        for (int kaartnummer : kaartnummers) {
-            ovChipkaarten.add(findById(kaartnummer));
-        }
-
-        return ovChipkaarten;
+        return query.getResultList();
     }
 
     @Override

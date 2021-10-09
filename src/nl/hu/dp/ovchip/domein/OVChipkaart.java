@@ -118,15 +118,24 @@ public class OVChipkaart {
     }
 
     public String toString() {
-        String s;
-        s = String.format("OVChipkaart {#%d, Geldig tot: %s, %d",
+        StringBuilder s;
+        s = new StringBuilder(String.format("OVChipkaart {#%d, Geldig tot: %s, %de klasse, Saldo: €%.2f, Reiziger: #%d}",
                 getKaartNummer(),
                 getGeldigTot(),
-                getKlasse());
-
-        s += String.format("e klasse, Saldo: €%.2f, Reiziger: #%d}",
+                getKlasse(),
                 getSaldo(),
-                getReiziger().getReizigernummer());
-        return s;
+                getReiziger().getReizigernummer()));
+
+        if (!producten.isEmpty()) {
+            s.append(String.format("\nProducten op OVChipkaart #%d:", getKaartNummer()));
+            for (Product product : producten) {
+                s.append("\n");
+                s.append(product);
+            }
+        }
+
+        s.append("\n");
+
+        return s.toString();
     }
 }

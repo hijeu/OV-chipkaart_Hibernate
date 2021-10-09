@@ -3,6 +3,7 @@ package nl.hu.dp.ovchip;
 import nl.hu.dp.ovchip.dao.*;
 import nl.hu.dp.ovchip.domein.Adres;
 import nl.hu.dp.ovchip.domein.OVChipkaart;
+import nl.hu.dp.ovchip.domein.Product;
 import nl.hu.dp.ovchip.domein.Reiziger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -87,6 +88,7 @@ public class Main {
 
         ovcDAOHibernate.setPdao(pDAOHibernate);
 
+
         //TEST ReizigerDAOHibernate
         System.out.println("\n---------- Test ReizigerDAOHibernate -------------");
         System.out.println("[Test ReizigerDAOHibernate.findAll() geeft de volgende reizigers:");
@@ -95,7 +97,7 @@ public class Main {
             System.out.println(reiziger);
         }
 
-        System.out.println(String.format("\n[Test ReizigerDAOHibernate.findById(5) geeft de volgende reiziger:\n%s\n",
+        System.out.println(String.format("\n[Test ReizigerDAOHibernate.findById() geeft de volgende reiziger:\n%s\n",
                 rDAOHibernate.findById(5)));
 
         System.out.println("[Test ReizigerDAOHibernate.findByGbdatum(\"2002-10-22\") geeft de volgende reizigers:");
@@ -108,8 +110,8 @@ public class Main {
         Date geldigTotDatum = java.sql.Date.valueOf("2020-03-31");
         Date geboortedatum = java.sql.Date.valueOf("1998-08-11");
         Reiziger hLubben = new Reiziger(3, "H", null, "Lubben",geboortedatum);
-        OVChipkaart ovChipkaart = new OVChipkaart(68514, geldigTotDatum, 1, 2.50, hLubben);
-        System.out.println(rDAOHibernate.findByOVChipkaart(ovChipkaart));
+        OVChipkaart ovChipkaart68514 = new OVChipkaart(68514, geldigTotDatum, 1, 2.50, hLubben);
+        System.out.println(rDAOHibernate.findByOVChipkaart(ovChipkaart68514));
 
         System.out.println("\n[Test ReizigerDAOHibernate.save()]");
         System.out.print(String.format("Aantal reizigers: %d, ", rDAOHibernate.findAll().size()));
@@ -129,6 +131,7 @@ public class Main {
         System.out.print(String.format("Aantal reizigers: %d, ", rDAOHibernate.findAll().size()));
         rDAOHibernate.delete(rDAOHibernate.findById(6));
         System.out.println("na ReizigerDAOHibernate.delete(): " + rDAOHibernate.findAll().size());
+
 
         //TEST AdresDAOHibernate
         System.out.println("\n---------- Test AdresDAOHibernate -------------");
@@ -164,6 +167,50 @@ public class Main {
 
         //TEST OVChipkaartDAOHibernate
         System.out.println("\n---------- Test OVChipkaartDAOHibernate -------------");
+        System.out.println("[Test OVChipkaartDAOHibernate.findAll() geeft de volgende ovchipkaarten:");
+        List<OVChipkaart> ovChipkaarten = ovcDAOHibernate.findAll();
+        for (OVChipkaart ovChipkaart : ovChipkaarten) {
+            System.out.println(ovChipkaart);
+        }
+
+        System.out.println(String.format("\n[Test OVCDAOHibernate.findById() geeft de volgende ovchipkaart:\n%s",
+                ovcDAOHibernate.findById(35283)));
+
+        geboortedatum = java.sql.Date.valueOf("2002-09-17");
+        Reiziger bVanRijn = new Reiziger(2, "B", "van", "Rijn", geboortedatum);
+        System.out.println(String.format("\n[Test OVCDAOHibernate.findByReiziger() geeft de volgende ovchipkaarten:"));
+        ovChipkaarten = ovcDAOHibernate.findByReiziger(bVanRijn);
+        for (OVChipkaart ovChipkaart : ovChipkaarten) {
+            System.out.println(ovChipkaart);
+        }
+
+        Product product3 = new Product(3, "Dagkaart 2e klas", "Een hele dag onbeperkt reizen met de trein.", 50.60
+);
+        System.out.println(String.format("\n[Test OVCDAOHibernate.findByProduct() geeft de volgende ovchipkaarten:"));
+        ovChipkaarten = ovcDAOHibernate.findByProduct(product3);
+        for (OVChipkaart ovChipkaart : ovChipkaarten) {
+            System.out.println(ovChipkaart);
+        }
+
+
+//        System.out.println("\n[Test ReizigerDAOHibernate.save()]");
+//        System.out.print(String.format("Aantal reizigers: %d, ", rDAOHibernate.findAll().size()));
+//        geboortedatum = java.sql.Date.valueOf("1999-03-13");
+//        Reiziger hieu = new Reiziger(6, "CHM", null, "Bui", geboortedatum);
+//        rDAOHibernate.save(hieu);
+//        System.out.println("na ReizigerDAOHibernate.save(): " + rDAOHibernate.findAll().size());
+//
+//        System.out.println("\n[Test ReizigerDAOHibernate.update()]");
+//        System.out.println("Gegevens van reiziger met reiziger_id #6:\n" + rDAOHibernate.findById(6));
+//        hieu.setTussenvoegsel("van de");
+//        hieu.setAchternaam("Buurt");
+//        rDAOHibernate.update(hieu);
+//        System.out.println("Na ReizigerDAOHibernate.update() zijn de gegevens:\n" + rDAOHibernate.findById(6));
+//
+//        System.out.println("\n[Test ReizigerDAOHibernate.delete()]");
+//        System.out.print(String.format("Aantal reizigers: %d, ", rDAOHibernate.findAll().size()));
+//        rDAOHibernate.delete(rDAOHibernate.findById(6));
+//        System.out.println("na ReizigerDAOHibernate.delete(): " + rDAOHibernate.findAll().size());
 
 
         //TEST ProductDAOHibernate
