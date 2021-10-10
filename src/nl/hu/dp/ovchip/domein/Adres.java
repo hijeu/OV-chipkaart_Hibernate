@@ -12,7 +12,7 @@ public class Adres {
     private String straat;
     private String woonplaats;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "reiziger_id")
     private Reiziger reiziger;
 

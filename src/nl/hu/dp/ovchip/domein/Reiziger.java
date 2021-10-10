@@ -14,9 +14,9 @@ public class Reiziger {
     private String achternaam;
     private Date geboortedatum;
 
-    @OneToOne(mappedBy = "reiziger")
+    @OneToOne(mappedBy = "reiziger", cascade = CascadeType.ALL)
     private Adres adres;
-    @OneToMany(mappedBy = "reiziger")
+    @OneToMany(mappedBy = "reiziger", cascade = CascadeType.ALL)
     private List<OVChipkaart> ovChipkaarten = new ArrayList<>();
 
     public Reiziger(int reizigernummer, String voorletters, String tussenvoegsel, String achternaam, Date geboortedatum) {

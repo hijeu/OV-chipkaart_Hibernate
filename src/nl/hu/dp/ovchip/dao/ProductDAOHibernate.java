@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAOHibernate implements ProductDAO {
@@ -20,18 +19,16 @@ public class ProductDAOHibernate implements ProductDAO {
     public boolean save(Product product) {
         boolean productSaved = false;
 
-        if (product != null) {
-            try {
-                if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
-                    session.beginTransaction();
-                }
-                session.save(product);
-
-                session.getTransaction().commit();
-                productSaved = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
+                session.beginTransaction();
             }
+            session.save(product);
+
+            session.getTransaction().commit();
+            productSaved = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return productSaved;
@@ -41,17 +38,15 @@ public class ProductDAOHibernate implements ProductDAO {
     public boolean update(Product product) {
         boolean productUpdated = false;
 
-        if (product != null) {
-            try {
-                if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
-                    session.beginTransaction();
-                }
-                session.update(product);
-                session.getTransaction().commit();
-                productUpdated = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
+                session.beginTransaction();
             }
+            session.update(product);
+            session.getTransaction().commit();
+            productUpdated = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return productUpdated;
@@ -61,7 +56,6 @@ public class ProductDAOHibernate implements ProductDAO {
     public boolean delete(Product product) {
         boolean productDeleted = false;
 
-        if (product != null) {
             try {
                 if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
                     session.beginTransaction();
@@ -72,7 +66,6 @@ public class ProductDAOHibernate implements ProductDAO {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
 
         return productDeleted;
     }

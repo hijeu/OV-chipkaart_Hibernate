@@ -14,7 +14,7 @@ public class Product {
     private String beschrijving;
     private double prijs;
 
-    @ManyToMany(mappedBy = "producten")
+    @ManyToMany(mappedBy = "producten", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<OVChipkaart> ovChipkaarten = new ArrayList<OVChipkaart>() {
     };
 

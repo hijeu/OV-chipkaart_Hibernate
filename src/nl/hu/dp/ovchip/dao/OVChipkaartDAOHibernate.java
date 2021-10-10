@@ -7,42 +7,28 @@ import org.hibernate.Session;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OVChipkaartDAOHibernate implements OVChipkaartDAO {
     private Session session;
-    private ProductDAO pdao;
 
     public OVChipkaartDAOHibernate (Session session) {
         this.session = session;
-    }
-
-    public void setPdao(ProductDAO pdao) {
-        this.pdao = pdao;
     }
 
     @Override
     public boolean save(OVChipkaart ovChipkaart) {
         boolean ovChipkaartSaved = false;
 
-        if (ovChipkaart != null) {
-            try {
-                if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
-                    session.beginTransaction();
-                }
-                session.save(ovChipkaart);
-
-                List<Product> producten = ovChipkaart.getProducten();
-                for (Product product : producten) {
-                    pdao.save(product);
-                }
-
-                session.getTransaction().commit();
-                ovChipkaartSaved = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
+                session.beginTransaction();
             }
+            session.save(ovChipkaart);
+            session.getTransaction().commit();
+            ovChipkaartSaved = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return ovChipkaartSaved;
@@ -52,24 +38,16 @@ public class OVChipkaartDAOHibernate implements OVChipkaartDAO {
     public boolean update(OVChipkaart ovChipkaart) {
         boolean ovChipkaartSaved = false;
 
-        if (ovChipkaart != null) {
-            try {
-                if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
-                    session.beginTransaction();
-                }
-                session.update(ovChipkaart);
-
-                List<Product> producten = ovChipkaart.getProducten();
-                for (Product product : producten) {
-                    pdao.update(product);
-                }
-
-                session.getTransaction().commit();
-                ovChipkaartSaved = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
+                session.beginTransaction();
             }
-        }
+            session.update(ovChipkaart);
+            session.getTransaction().commit();
+            ovChipkaartSaved = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+    }
 
         return ovChipkaartSaved;
     }
@@ -78,17 +56,15 @@ public class OVChipkaartDAOHibernate implements OVChipkaartDAO {
     public boolean delete(OVChipkaart ovChipkaart) {
         boolean ovChipkaartDeleted = false;
 
-        if (ovChipkaart != null) {
-            try {
-                if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
-                    session.beginTransaction();
-                    session.delete(ovChipkaart);
-                    session.getTransaction().commit();
-                    ovChipkaartDeleted = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
+                session.beginTransaction();
             }
+            session.delete(ovChipkaart);
+            session.getTransaction().commit();
+            ovChipkaartDeleted = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return ovChipkaartDeleted;
@@ -96,21 +72,7 @@ public class OVChipkaartDAOHibernate implements OVChipkaartDAO {
 
     @Override
     public OVChipkaart findById(int id) {
-        OVChipkaart ovChipkaart = null;
-        Query query = session.createQuery("from ov_chipkaart where kaartNummer = :kaart_nummer");
-        query.setParameter("kaart_nummer", id);
-
-        try {
-            Object result = query.getSingleResult();
-
-            if (result instanceof OVChipkaart) {
-                ovChipkaart = (OVChipkaart) result;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return ovChipkaart;
+        return session.get(OVChipkaart.class, id);
     }
 
     @Override

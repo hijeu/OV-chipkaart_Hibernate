@@ -16,10 +16,10 @@ public class OVChipkaart {
     private int klasse;
     private double saldo;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "reiziger_id")
     private Reiziger reiziger;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "ov_chipkaart_product",
             joinColumns = {@JoinColumn(name = "kaart_nummer")},
             inverseJoinColumns = {@JoinColumn(name = "product_nummer")})

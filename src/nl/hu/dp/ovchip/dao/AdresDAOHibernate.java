@@ -10,31 +10,24 @@ import java.util.List;
 
 public class AdresDAOHibernate implements AdresDAO {
     private Session session;
-    private ReizigerDAO rdao;
 
     public AdresDAOHibernate (Session session) {
         this.session = session;
-    }
-
-    public void setRdao (ReizigerDAO rdao) {
-        this.rdao = rdao;
     }
 
     @Override
     public boolean save(Adres adres) {
         boolean adresSaved = false;
 
-        if (adres != null) {
-            try {
-                if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
-                    session.beginTransaction();
-                }
-                session.save(adres);
-                session.getTransaction().commit();
-                adresSaved = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
+                session.beginTransaction();
             }
+            session.save(adres);
+            session.getTransaction().commit();
+            adresSaved = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return adresSaved;
@@ -44,17 +37,15 @@ public class AdresDAOHibernate implements AdresDAO {
     public boolean update(Adres adres) {
         boolean adresUpdated = false;
 
-        if (adres != null) {
-            try {
-                if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
-                    session.beginTransaction();
-                }
-                session.update(adres);
-                session.getTransaction().commit();
-                adresUpdated = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
+                session.beginTransaction();
             }
+            session.update(adres);
+            session.getTransaction().commit();
+            adresUpdated = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return adresUpdated;
@@ -64,17 +55,15 @@ public class AdresDAOHibernate implements AdresDAO {
     public boolean delete(Adres adres) {
         boolean adresDeleted = false;
 
-        if (adres != null) {
-            try {
-                if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
-                    session.beginTransaction();
-                }
-                session.delete(adres);
-                session.getTransaction().commit();
-                adresDeleted = true;
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
+                session.beginTransaction();
             }
+            session.delete(adres);
+            session.getTransaction().commit();
+            adresDeleted = true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return adresDeleted;

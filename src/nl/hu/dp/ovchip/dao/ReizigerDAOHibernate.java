@@ -2,7 +2,6 @@ package nl.hu.dp.ovchip.dao;
 
 import nl.hu.dp.ovchip.domein.OVChipkaart;
 import nl.hu.dp.ovchip.domein.Reiziger;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
@@ -11,19 +10,9 @@ import java.util.List;
 
 public class ReizigerDAOHibernate implements ReizigerDAO {
     private Session session;
-    private AdresDAO adao;
-    private OVChipkaartDAO ovcdao;
 
     public ReizigerDAOHibernate (Session session) {
         this.session = session;
-    }
-
-    public void setAdao(AdresDAO adao) {
-        this.adao = adao;
-    }
-
-    public void setOvcDao(OVChipkaartDAO ovcdao) {
-        this.ovcdao = ovcdao;
     }
 
     @Override
@@ -35,12 +24,6 @@ public class ReizigerDAOHibernate implements ReizigerDAO {
                 session.beginTransaction();
             }
             session.save(reiziger);
-            adao.save(reiziger.getAdres());
-
-            List<OVChipkaart> ovChipkaarten = reiziger.getOVChipkaarten();
-            for (OVChipkaart ovChipkaart : ovChipkaarten) {
-                ovcdao.save(ovChipkaart);
-            }
 
             session.getTransaction().commit();
             reizigerSaved = true;
@@ -60,12 +43,6 @@ public class ReizigerDAOHibernate implements ReizigerDAO {
                 session.beginTransaction();
             }
             session.update(reiziger);
-            adao.update(reiziger.getAdres());
-
-            List<OVChipkaart> ovChipkaarten = reiziger.getOVChipkaarten();
-            for (OVChipkaart ovChipkaart : ovChipkaarten) {
-                ovcdao.update(ovChipkaart);
-            }
 
             session.getTransaction().commit();
             reizigerUpdated = true;
@@ -83,12 +60,6 @@ public class ReizigerDAOHibernate implements ReizigerDAO {
         try {
             if (session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
                 session.beginTransaction();
-            }
-            adao.delete(reiziger.getAdres());
-
-            List<OVChipkaart> ovChipkaarten = reiziger.getOVChipkaarten();
-            for (OVChipkaart ovChipkaart : ovChipkaarten) {
-                ovcdao.delete(ovChipkaart);
             }
 
             session.delete(reiziger);
